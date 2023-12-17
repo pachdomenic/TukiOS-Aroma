@@ -27,9 +27,9 @@ touch $configfile
 bootloader=$(getprop ro.boot.bootloader)
 
 # Space Checks
-system_size=$(blockdev --getsize64 /dev/block/by-name/system)
-vendor_size=$(blockdev --getsize64 /dev/block/by-name/vendor)
-product_size=$(blockdev --getsize64 /dev/block/by-name/product)
+system_size=$(blockdev --getsize64 /dev/block/mapper/system)
+vendor_size=$(blockdev --getsize64 /dev/block/mapper/vendor)
+product_size=$(blockdev --getsize64 /dev/block/mapper/product)
 
 system_size_mb=$(echo $system_size | cut -c1-7)
 system_size_mb=$(($system_size_mb / 1024))
@@ -45,21 +45,14 @@ echo "    -> System : $system_size_mb MB"
 echo "    -> Vendor : $vendor_size_mb MB"
 echo "    -> Product : $product_size_mb MB"
 
-if [ "$system_size" -ge 4320133120 ]; then
-    append_to_file "system_compatible=1"
-else
-    append_to_file "system_compatible=0"
-    echo "    -> <#ff0000>System is Insufficient</#>"
-    exit 55
-fi
-if [ "$vendor_size" -ge 545259520 ]; then
+if [ "$vendor_size" -ge 650000000 ]; then
     append_to_file "vendor_compatible=1"
 else
     append_to_file "vendor_compatible=0"
     echo "    -> <#ff0000>Vendor is Insufficient</#>"
     exit 55
 fi
-if [ "$product_size" -ge 209715200 ]; then
+if [ "$product_size" -ge 559715200 ]; then
     append_to_file "product_compatible=1"
 else
     append_to_file "product_compatible=0"
@@ -74,9 +67,9 @@ else
     append_to_file "auxy_to_system=0"
 fi
 # 400mb size 419430400
-if [ "$product_size" -ge 419430300 ]; then
+if [ "$product_size" -ge 1024000000 ]; then
     append_to_file "auxy_to_product=1"
-    echo "    -> <#00ff00>Product is 300MB+</#>"
+    echo "    -> <#00ff00>Product is 1GB+</#>"
 else
     append_to_file "auxy_to_product=0"
 fi
@@ -89,20 +82,8 @@ if [ -z "$bootloader" ]; then
     bootloader=$(/tmp/busybox sed -n 's/.*androidboot.bootloader=\([^[:space:]]*\).*/\1/p' /proc/cmdline)
 fi
 
-device="A105"
-device_alt="a10"
-if is_substring "$device" "$bootloader"; then
-    echo "    -> Bootloader  : $bootloader"
-    echo "    -> <#00ff00>Detected as : Galaxy $device </#>"
-    append_to_file "device_id=$device"
-    append_to_file "device_id_alt=$device_alt"
-    append_to_file "is_7904=0"
-    device_supported="1"
-    exit 2
-fi
-
-device="A205"
-device_alt="a20"
+device="M315"
+device_alt="m31"
 if is_substring "$device" "$bootloader"; then
     echo "    -> Bootloader  : $bootloader"
     echo "    -> <#00ff00>Detected as : Galaxy $device </#>"
@@ -113,8 +94,8 @@ if is_substring "$device" "$bootloader"; then
     exit 1
 fi
 
-device="A202"
-device_alt="a20e"
+device="M215"
+device_alt="m21"
 if is_substring "$device" "$bootloader"; then
     echo "    -> Bootloader  : $bootloader"
     echo "    -> <#00ff00>Detected as : Galaxy $device </#>"
@@ -124,8 +105,20 @@ if is_substring "$device" "$bootloader"; then
     device_supported="1"
     exit 1
 fi
-device="A305"
-device_alt="a30"
+
+device="M317F"
+device_alt="m31s"
+if is_substring "$device" "$bootloader"; then
+    echo "    -> Bootloader  : $bootloader"
+    echo "    -> <#00ff00>Detected as : Galaxy $device </#>"
+    append_to_file "device_id=$device"
+    append_to_file "device_id_alt=$device_alt"
+    append_to_file "is_7904=0"
+    device_supported="1"
+    exit 1
+fi
+device="A515"
+device_alt="a51"
 if is_substring "$device" "$bootloader"; then
     echo "    -> Bootloader  : $bootloader"
     echo "    -> <#00ff00>Detected as : Galaxy $device </#>"

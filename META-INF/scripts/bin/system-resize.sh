@@ -18,17 +18,17 @@
 
 umount /system
 
-e2fsck -f /dev/block/by-name/system
-resize2fs /dev/block/by-name/system
-e2fsck -f /dev/block/by-name/vendor
-resize2fs /dev/block/by-name/vendor
-e2fsck -f /dev/block/by-name/product
-resize2fs /dev/block/by-name/product
+e2fsck -f /dev/block/mapper/system
+resize2fs /dev/block/mapper/system
+e2fsck -f /dev/block/mapper/vendor
+resize2fs /dev/block/mapper/vendor
+e2fsck -f /dev/block/mapper/product
+resize2fs /dev/block/mapper/product
 sync
-e2fsck -f /dev/block/by-name/system
-resize2fs /dev/block/by-name/system
-e2fsck -f /dev/block/by-name/vendor
-resize2fs /dev/block/by-name/vendor
-e2fsck -f /dev/block/by-name/product
-resize2fs /dev/block/by-name/product
+e2fsck -f /dev/block/mapper/system
+resize2fs /dev/block/mapper/system
+e2fsck -f /dev/block/mapper/vendor
+resize2fs /dev/block/mapper/vendor
+e2fsck -f /dev/block/mapper/product
+resize2fs /dev/block/mapper/product
 sync

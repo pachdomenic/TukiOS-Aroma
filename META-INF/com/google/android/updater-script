@@ -1,15 +1,10 @@
 # Dedicated to the all mighty Bandi Chod
 ui_print("===================================");
-ui_print("  ROM    : FEATHER PROJECT         ");
+ui_print("  ROM    : TukiOS                  ");
 ui_print("  OS     : OneUI 6.0 | Android 14  ");
-ui_print("  Version : S22_Alpha 4            ");
+ui_print("  Version : V2.0 Beta              ");
 ui_print("  Security: November 2023          ");
-ui_print("  KERNEL  : Eureka 15.0            ");
-ui_print("  DTB    : 5, Stable v2            ");
-ui_print("     -> Big cores: 520 - 2080      ");
-ui_print("     -> Little cores: 546 - 1690   ");
-ui_print("     -> GPU Freq: 343 - 1300       ");
-ui_print("  by @RiskyEagle                   ");
+ui_print("  by @Pachadomenic                 ");
 ui_print("===================================");
 set_progress(0.10);
 ##################################################
@@ -29,14 +24,14 @@ else
     ui_print(" Installing ROM ...");
     set_progress(0.25);
     ui_print("@>Extracting System...");
-    block_image_update("/dev/block/platform/13500000.dwmmc0/by-name/system", package_extract_file("META-INF/com/google/CERT.SF"), "META-INF/scripts/xbin/busybox.kek.br", "img/system.img");
+    block_image_update("/dev/block/mapper/system", package_extract_file("rom/system.transfer.list"), "rom/system.new.dat.br", "rom/system.patch.dat") || abort(" Failed to update system image!");
     run_program("/tmp/busybox", "sleep", "1");
     set_progress(0.68);
     ui_print("@>Extracting Vendor...");
-    block_image_update("/dev/block/platform/13500000.dwmmc0/by-name/vendor", package_extract_file("META-INF/com/google/MANIFEST.MF"), "META-INF/scripts/xbin/mounts.kek.br", "img/vendor.img");
+    block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/vendor.transfer.list"), "rom/vendor.new.dat.br", "rom/vendor.patch.dat") || abort(" Failed to update Vendor image!");
     run_program("/tmp/busybox", "sleep", "1");
     ui_print("@>Extracting Product...");
-    block_image_update("/dev/block/platform/13500000.dwmmc0/by-name/product", package_extract_file("META-INF/com/google/CERT.RSA"), "META-INF/scripts/xbin/sleep.kek.br", "img/product.img");
+    block_image_update("/dev/block/mapper/product", package_extract_file("rom/product.transfer.list"), "rom/product.new.dat.br", "rom/product.patch.dat") || abort(" Failed to update product image!");
     run_program("/tmp/busybox", "sleep", "1");
 endif;
 ##################################################
@@ -152,7 +147,6 @@ if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A405" then
 endif;
 
 #Permissions
-set_metadata_recursive("/vendor/tee/", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:tee_file:s0");
 set_metadata_recursive("/vendor/etc/wifi/", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_configs_file:s0");
 set_metadata_recursive("/vendor/firmware", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
 

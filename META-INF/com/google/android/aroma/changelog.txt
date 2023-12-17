@@ -1,39 +1,5 @@
-#S22 #a20 #T #OneUI6
+TukiOS V2.0 Beta Internal
 
-OneUI 6.0 S22 port
+Beta 1:
+Initial beta
 
-
-Bugs
-- Face Unlock
-- Dex
-
-Changelog Alpha 1:
-Initial Release S901BXXU6DWK4
-
-Changelog Alpha 2:
-- using alternate audio policy for fixing audio
-- internal fixups
-- Added FM
-- Added Samsung camera
-- Added NFC Support
-- Secure Folder Patch
-- BT Library Patched
-- BT Media and Calls fixed
-- Add Aod fix
-- FOD animation removed
-- Internal error fixed
-
-Changelog Alpha 3:
-- Added Samsung Camera
-
-Changelog Alpha 4:
-- Switch to default static Blur
-- Portrait lag reduced
-- Repacked kernel
-- Camera fixups
-- Clipper fixed
-- OCR fixed
-- Added CSC
-- Added Fun mode @SzCs92
-- a30 a30s a40: camera crash fixed
-- Added fix for audio @Pandino19

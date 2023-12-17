@@ -11,10 +11,10 @@
 --------------------------------------
 >Credits and huge thanks:
 --------------------------------------
-@Roynatech & @chatur2709 for Kernel
+@Roynatech for Kernel
 @amarullz for Aroma Installer
 @MrWaehere for CRB Kitchen
-@ianmacd for multidisabler
+@RiskyEagle for Aroma Base 
 @ricci206 for Secure Folder patch
 @3arthur6 For Bluetooth lib patcher
 
