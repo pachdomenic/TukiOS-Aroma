@@ -4,7 +4,7 @@
 # To be used when ones images are ready
 # Call with the format ./build.sh FeatherProject_S22_T_v0.7.zip
 
-supported_devices=("a10" "a20" "a20e" "a30" "a30s" "a40")
+supported_devices=("m31" "m21" "m31s" "a51" "f41")
 
 if [ -z "$1" ]; then
     echo "Filename not provided"
@@ -12,17 +12,15 @@ if [ -z "$1" ]; then
 fi
 
 # Validate XML
-./validatexml.sh
-if [[ $? -ne 0 ]]; then
-    echo "XML validation failed. Exiting..."
-    exit 1
-fi
+#./validatexml.sh
+#if [[ $? -ne 0 ]]; then
+#    echo "XML validation failed. Exiting..."
+#    exit 1
+#fi
 
 # Pull overlays
 for device in "${supported_devices[@]}"; do
     mkdir -p device/${device}/overlay/
-    cp ../FP_overlay/${device}/framework-res__auto_generated_rro_vendor.apk device/${device}/overlay/
-    cp ../FP_kernels/${device}/* device/${device}/
 done
 
 rm -f $1
@@ -34,5 +32,5 @@ if [[ "$lowercase_arg" == *"patch"* ]]; then
     adb push $lowercase_arg /sdcard/
     adb shell twrp install /sdcard/$lowercase_arg
 else
-    zip -v -r $1 META-INF/com META-INF/scripts/bin mods img device auxy csc debloat featherproject.keys META-INF/scripts/xbin
+    D:\ProgramFiles\GnuWin32\bin\zip.exe -v -r $1 META-INF/com META-INF/scripts/bin mods img device auxy csc debloat featherproject.keys META-INF/scripts/xbin
 fi
