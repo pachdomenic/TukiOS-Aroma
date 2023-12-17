@@ -32,5 +32,5 @@ if [[ "$lowercase_arg" == *"patch"* ]]; then
     adb push $lowercase_arg /sdcard/
     adb shell twrp install /sdcard/$lowercase_arg
 else
-    D:\ProgramFiles\GnuWin32\bin\zip.exe -v -r $1 META-INF/com META-INF/scripts/bin mods img device auxy csc debloat featherproject.keys META-INF/scripts/xbin
+    D:\oneuidev\TukiAroma\zip\bin\zip.exe -v -r $1 META-INF/com META-INF/scripts/bin mods img device auxy csc debloat featherproject.keys META-INF/scripts/xbin
 fi
