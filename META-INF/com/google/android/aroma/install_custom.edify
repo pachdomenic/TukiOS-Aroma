@@ -18,10 +18,12 @@ form(
     "throttle",     "Throttling",        "",                                           "group",
       "1",     "Little to 1352",      "Less heat similar performance",                 "select",
       "2",     "Remove throttle",     "Revert ^option above^",                         "select",
+	  "3",     "Set Stock value",     "Stock setting better stability",                "select",
       
     "lmk",     "LMK - LowMemoryKiller",        "",                                     "group",
       "1",     "Light LMK",           "Allow heavy multi-tasking",                     "select",
       "2",     "Standard LMk",        "Allow UI more responsive",                      "select",
+	  "3",     "Set Stock value",     "Stock setting better stability",                "select",
       
     "blur",     "UserInterface",        "",                                            "group",
       "1",     "Enable Live Blur UI",       "Flagship blurs that's realistic and looks good",                      "select",
@@ -30,8 +32,7 @@ form(
     "group6",     "Miscellaneous",        "",                                           "group",
       "brightness",     "Remove extended brightness",       "The display will have lower Brightness than normally",  "check",
       "dex",     "Dex on Device",       "The Dex mode will open on the device itself",  "check",
-      "bootani",  "AOSP Bootanimation",  "Enables support for AOSP bootanimation zip",    "check",
-	  "ota",      "On The Air update support", "Enables OTA support",                     "check"
+      "bootani",  "AOSP Bootanimation",  "Enables support for AOSP bootanimation zip",    "check"
 );
 
 ###############################################
