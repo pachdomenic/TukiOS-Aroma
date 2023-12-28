@@ -63,6 +63,8 @@ menubox(
     "@su", 
     "kernel.prop",
 
-    "Eureka KernelSU (default)",      "Pre-rooted hiddenly with EurekaKernel KSU.",                                   "@eksu",
+    "Grass KernelSU (default)",      "Pre-rooted hiddenly with GrassKernel KSU.",                                   "@eksu",
+	"Grass Clean", 					"Kernel Without Any root.",                                                     "@ekm",
+    "Grass Magisk",	                "Install Grass with Magisk",                                                    "@magisk",
     "Skip Kernel",  "Skip Changing Kernel at all. Use existing Kernel",            "@skip"
 );
