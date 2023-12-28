@@ -17,6 +17,17 @@
 @RiskyEagle for Aroma Base 
 @ricci206 for Secure Folder patch
 @3arthur6 For Bluetooth lib patcher
+@FlylarbTheBMO for helping and vendor for m31
+@OS_Tester for  providing me some tweaks and for testing
+@Ajaythepower1606 for helping 
+@TenSeventy7 for Zest menu
+@topjohnwu for Magisk
+@GalaxyA51user for China Smart manager and some csc tweaks
+@el0xrxn for csc tweaks and floating feature tweaks
+@JaeKar99 for boot animation
+@rmzntb for testing on m31s
+@Bobert_A30 for providing bin for zip bootanim support
+@SourabhGharde for testing
 
 You do this at your own risk! 
 
