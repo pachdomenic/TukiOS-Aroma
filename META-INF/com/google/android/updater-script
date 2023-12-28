@@ -27,30 +27,17 @@ else
     block_image_update("/dev/block/mapper/system", package_extract_file("rom/system.transfer.list"), "rom/system.new.dat.br", "rom/system.patch.dat") || abort(" Failed to update system image!");
     run_program("/tmp/busybox", "sleep", "1");
     set_progress(0.68);
-	if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M315" then
+	if file_getprop("/tmp/aroma/compatible.prop", "m31vendor") == "1" then
 		ui_print("@>Extracting M31 Vendor...");
-		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m31/vendor.transfer.list"), "rom/device/m31/vendor.new.dat.br", "rom/device/m31/vendor.patch.dat") || abort(" Failed to update Vendor image!");
-    run_program("/tmp/busybox", "sleep", "1");
+		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m31/vendor.transfer.list"), "rom/device/m31/vendor.new.dat.br", "rom/device/m31/vendor.patch.dat") || abort(" Failed to update Vendor image!")
 	endif;
-	if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M317" then
-		ui_print("@>Extracting M31s Vendor...");
-		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m31/vendor.transfer.list"), "rom/device/m31/vendor.new.dat.br", "rom/device/m31/vendor.patch.dat") || abort(" Failed to update Vendor image!");
-    run_program("/tmp/busybox", "sleep", "1");
-	endif;
-	if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "F415" then
-		ui_print("@>Extracting M31 Vendor...");
-		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m31/vendor.transfer.list"), "rom/device/m31/vendor.new.dat.br", "rom/device/m31/vendor.patch.dat") || abort(" Failed to update Vendor image!");
-    run_program("/tmp/busybox", "sleep", "1");
-	endif;
-	if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M215" then
-		ui_print("@>Extracting M21 Vendor...");
-	    block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m21/vendor.transfer.list"), "rom/device/m21/vendor.new.dat.br", "rom/device/m21/vendor.patch.dat") || abort(" Failed to update Vendor image!");
-		run_program("/tmp/busybox", "sleep", "1");
-	endif;
-	if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A515" then
+	if file_getprop("/tmp/aroma/compatible.prop", "a51vendor") == "1" then
 		ui_print("@>Extracting A51 Vendor...");
-	    block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/a51/vendor.transfer.list"), "rom/device/a51/vendor.new.dat.br", "rom/device/a51/vendor.patch.dat") || abort(" Failed to update Vendor image!");
-		run_program("/tmp/busybox", "sleep", "1");
+		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/a51/vendor.transfer.list"), "rom/device/a51/vendor.new.dat.br", "rom/device/a51/vendor.patch.dat") || abort(" Failed to update Vendor image!")
+	endif;
+	if file_getprop("/tmp/aroma/compatible.prop", "m21vendor") == "1" then
+		ui_print("@>Extracting M21 Vendor...");
+		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m21/vendor.transfer.list"), "rom/device/m21/vendor.new.dat.br", "rom/device/m21/vendor.patch.dat") || abort(" Failed to update Vendor image!")
 	endif;
     ui_print("@>Extracting Product...");
     block_image_update("/dev/block/mapper/product", package_extract_file("rom/product.transfer.list"), "rom/product.new.dat.br", "rom/product.patch.dat") || abort(" Failed to update product image!");
@@ -64,25 +51,6 @@ run_program("/tmp/busybox", "sh", "/tmp/system-resize.sh");
 run_program("/tmp/busybox", "mount", "-t", "auto", "/system_root");
 run_program("/tmp/busybox", "mount", "-t", "auto", "/vendor");
 run_program("/tmp/busybox", "mount", "-t", "auto", "/product");
-##################################################
-#AUXY
-##################################################
-if file_getprop("/tmp/aroma/compatible.prop", "auxy_to_system") == "1" then
-    package_extract_dir("auxy/data/app", "/system_root/system/app");
-    delete_recursive("/product/app/WebViewGoogle");
-endif;
-if file_getprop("/tmp/aroma/compatible.prop", "auxy_to_system") == "0" then
-    if file_getprop("/tmp/aroma/compatible.prop", "auxy_to_product") == "1" then
-        package_extract_dir("auxy/data/app/WebViewGoogle", "/product/app/WebViewGoogle");
-        package_extract_dir("auxy/data/app/TrichromeLibrary", "/product/app/TrichromeLibrary");
-    endif;
-    if file_getprop("/tmp/aroma/compatible.prop", "auxy_to_product") == "0" then
-        package_extract_dir("auxy/data/app", "/data/app");
-        set_metadata_recursive("/data/app/Chrome", "uid", 1000, "gid", 1000, "dmode", 0755, "fmode", 0755, "selabel", "u:object_r:apk_data_file:s0");
-        set_metadata_recursive("/data/app/WebViewGoogle", "uid", 1000, "gid", 1000, "dmode", 0755, "fmode", 0755, "selabel", "u:object_r:apk_data_file:s0");
-        set_metadata_recursive("/data/app/TrichromeLibrary", "uid", 1000, "gid", 1000, "dmode", 0755, "fmode", 0755, "selabel", "u:object_r:apk_data_file:s0");
-    endif;
-endif;
 ##################################################
 #DEVICE
 ##################################################
@@ -105,36 +73,33 @@ if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "F415" then
     ui_print("@>Detected Device: Galaxy F41");
 endif;
 
-#Permissions
-set_metadata_recursive("/vendor/etc/wifi/", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_configs_file:s0");
-set_metadata_recursive("/vendor/firmware", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
 
 ##################################################
 #CSC
 ##################################################
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "1" then
     ui_print("@>Installing CSC OLE...");
-    package_extract_dir("csc/ole/prism/etc", "/vendor/prism/etc");
+    package_extract_dir("csc/ole/prism/etc", "/prism/etc");
 endif;
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "2" then
     ui_print("@>Installing CSC ODM...");
-    package_extract_dir("csc/odm/prism/etc", "/vendor/prism/etc");
+    package_extract_dir("csc/odm/prism/etc", "/prism/etc");
 endif;
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "3" then
     ui_print("@>Installing CSC OLM...");
-    package_extract_dir("csc/olm/prism/etc", "/vendor/prism/etc");
+    package_extract_dir("csc/olm/prism/etc", "/prism/etc");
 endif;
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "4" then
     ui_print("@>Installing CSC OWO...");
-    package_extract_dir("csc/owo/prism/etc", "/vendor/prism/etc");
+    package_extract_dir("csc/owo/prism/etc", "/prism/etc");
 endif;
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "5" then
     ui_print("@>Installing CSC OJM...");
-    package_extract_dir("csc/ojm/prism/etc", "/vendor/prism/etc");
+    package_extract_dir("csc/ojm/prism/etc", "/prism/etc");
 endif;
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "6" then
     ui_print("@>Installing CSC OXM...");
-    package_extract_dir("csc/oxm/prism/etc", "/vendor/prism/etc");
+    package_extract_dir("csc/oxm/prism/etc", "/prism/etc");
 endif;
 if file_getprop("/tmp/aroma/csc.prop", "selected") == "7" then
     ui_print(" Skipping CSC ...");
@@ -192,29 +157,6 @@ if file_getprop("/tmp/aroma/mods.prop","blur") == "2" then
   package_extract_file("mods/liteanim/lib64/libgui.so", "/system_root/system/lib64/libgui.so");
   set_metadata("/system_root/system/bin/surfaceflinger", "uid", 0, "gid", 2000, "fmode", 0755, "selabel", "u:object_r:surfaceflinger_exec:s0");
 endif;
-
-# Knox
-if file_getprop("/tmp/aroma/mods.prop","knox") == "1" then
-  ui_print("@>Removing KNOX app support...");
-  delete_recursive("/system_root/system/priv-app/KLMSAgent");
-  delete_recursive("/system_root/system/priv-app/knoxanalyticsagent");
-  delete_recursive("/system_root/system/priv-app/KnoxCore");
-  delete_recursive("/system_root/system/priv-app/KnoxPushManager");
-  delete_recursive("/system_root/system/priv-app/knoxvpnproxyhandler");
-  delete_recursive("/system_root/system/priv-app/KPECore");
-endif;
-
-# NFC
-if file_getprop("/tmp/aroma/mods.prop", "nfc") == "1" then
-    ui_print("@>Removing NFC...");
-    delete_recursive("/system_root/system/app/NfcNci");
-endif;
-
-# User
-if file_getprop("/tmp/aroma/mods.prop","brightness") == "1" then
-  ui_print("@>Removing extended brightness...");
-  delete_recursive("/vendor/etc/init/fp_aospbrightness.rc");
-  endif;
 
 # Dex
 if file_getprop("/tmp/aroma/mods.prop","dex") == "1" then
