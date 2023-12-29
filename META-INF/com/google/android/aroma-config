@@ -46,9 +46,9 @@ theme("modern_blue");
 ###############################################
 ini_set("text_next", "Next ");
 viewbox(
-    "Feather Project",
+    "TukiOS",
     "<@center>Welcome to the installation wizard!</@>\n\n" +
-    "<@center>The install wizard is a user-friendly tool that will assist you step-by-step in installing the Feather Project onto your device. It simplifies the installation process by providing clear instructions and prompts, ensuring a smooth and hassle-free experience. By following the wizard, you'll be able to seamlessly set up the Feather Project and begin enjoying its features and functionalities on your device.</@>\n\n\n\n" +
+    "<@center>The install wizard is a user-friendly tool that will assist you step-by-step in installing the TukiOS onto your device. It simplifies the installation process by providing clear instructions and prompts, ensuring a smooth and hassle-free experience. By following the wizard, you'll be able to seamlessly set up TukiOS and begin enjoying its features and functionalities on your device.</@>\n\n\n\n" +
     "<@center>Tap <b>'next'</b> to continue.</@>",
     "@feather_logo"
 );
