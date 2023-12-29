@@ -12,4 +12,4 @@ if [ -z "$1" ]; then
 fi
 
 rm -f $1
-zip -v -r $1 META-INF/com META-INF/scripts/bin mods img device auxy csc debloat featherproject.keys META-INF/scripts/xbin
+zip -v -r $1 META-INF/com META-INF/scripts/bin mods rom device auxy csc debloat featherproject.keys META-INF/scripts/xbin
