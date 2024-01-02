@@ -1,6 +1,5 @@
 *.zip
-system/*/*
-META-INF/scripts/xbin/*
+rom/
 mods/keys/*
 device/*/overlay
 !/mods/magisk.zip
