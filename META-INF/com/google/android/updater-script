@@ -2,9 +2,10 @@
 ui_print("===================================");
 ui_print("  ROM    : TukiOS                  ");
 ui_print("  OS     : OneUI 6.0 | Android 14  ");
+ui_print("  Based From : Galaxy S21 FE       ");
 ui_print("  Version : V2.0 Beta              ");
 ui_print("  Security: November 2023          ");
-ui_print("  by @Pachadomenic                 ");
+ui_print("  With love by @Pachadomenic        ");
 ui_print("===================================");
 set_progress(0.10);
 ##################################################
