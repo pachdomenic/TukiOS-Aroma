@@ -1,4 +1,4 @@
-# Dedicated to the all mighty Bandi Chod
+﻿# Dedicated to the all mighty Bandi Chod
 ##################################################
 ini_set("force_colorspace", "rgba");
 ini_set("transition", "stack");
@@ -12,6 +12,7 @@ ini_set("rom_date",             "10/December/2023");
 splash(2000, "aromalogo");
 fontresload( "0", "ttf/regular.ttf", "12" );
 fontresload( "1", "ttf/bold.ttf", "16" );
+fontresload( "2", "ttf/bold.ttf", "16" );
 theme("modern_blue");
 
 ###############################################
@@ -23,7 +24,7 @@ viewbox(
     "<@center>Welcome to the installation wizard!</@>\n\n" +
     "<@center>The install wizard is a user-friendly tool that will assist you step-by-step in installing the TukiOS onto your device. It simplifies the installation process by providing clear instructions and prompts, ensuring a smooth and hassle-free experience. By following the wizard, you'll be able to seamlessly set up TukiOS and begin enjoying its features and functionalities on your device.</@>\n\n\n\n" +
     "<@center>Tap <b>'next'</b> to continue.</@>",
-    "@feather_logo"
+    "@tukilogo"
 );
 
 ###############################################

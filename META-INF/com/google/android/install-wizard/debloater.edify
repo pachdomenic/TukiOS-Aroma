@@ -1,0 +1,26 @@
+form(
+    "Custom Debloat",
+    "Choose services and main bloat that you wanted to nuke",
+    "@nuke",
+    "debloat_v2.prop",
+
+	"sasung", "Samsung", "", "group",
+      "quickshare",  "QuickShare",       "QuickShare for file sharing",                        "check",
+      "dex",	"Samsung Dex",		"Samsung's Windows-Like UI",			     "check",
+      "ocr",         "OCR System",       "For extracting text from images ",                    "check",
+	  "arcore",      "AR Core",          "App that uses AR for Fun, Stickers, emoji etc",     "check",
+      "weather",     "Weather",          "Samsung Weather, for checking weather",              "check",
+      "wellbeing",   "Digital Wellbeing", "App for tracking device usage, monitor activity",    "check",
+      "samaccount",  "Samsung Account",  "Allows to sync and use samsung account",             "check",
+	  
+	"bixby", "Bixby", "", "group",
+	  "bixby",       "Bixby",            "Samsung Voice Assistant, answers calls",             "check",
+      "routines",      "Routines",            "It let you open apps and change settings automatically depending on what you're doing.", "check",
+	  
+	"misc", "Misc", "", "group",
+	  "smartview",     "SmartView",       "App to cast, alternative of GMS cast-to-TV",  "check",
+      "linktowindows",  "LinkToWindowsService",  "Service to make the Phone Link app working, also gets OneUI look and many more features for Samsung and Windows",    "check",
+	  "quickboard",     "Quickboard",       "Shows Media and Device control, remove if not needed, keep it if you wanted to flex xD",       "check",
+      "magnifier",     "Magnifier",       "Uses digital zoom with various effects and many features for accessibility",  "check"
+	  "sfree",     "Samsung Free",     "News App by Samsung ", "check"
+);

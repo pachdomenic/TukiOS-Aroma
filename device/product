@@ -1,0 +1,2 @@
+#! /tmp/busybox sh
+rm -rf /product/overlay

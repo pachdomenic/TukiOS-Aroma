@@ -13,7 +13,7 @@ set_metadata_recursive("/tmp", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0777)
 ##################################################
 #MOUNTS
 ##################################################
-ui_print("@>Mount partition...");
+ui_print("@>Unmounting partitions...");
 ifelse(is_mounted("/system_root"), unmount("/system_root"));
 ifelse(is_mounted("/vendor"), unmount("/vendor"));
 ifelse(is_mounted("/product"), unmount("/product"));
@@ -42,6 +42,9 @@ else
     ui_print("@>Extracting Product...");
     block_image_update("/dev/block/mapper/product", package_extract_file("rom/product.transfer.list"), "rom/product.new.dat.br", "rom/product.patch.dat") || abort(" Failed to update product image!");
     run_program("/tmp/busybox", "sleep", "1");
+	ui_print("@>Extracting odm...");
+    block_image_update("/dev/block/mapper/odm", package_extract_file("rom/odm.transfer.list"), "rom/odm.new.dat.br", "rom/odm.patch.dat") || abort(" Failed to update odm image!");
+    run_program("/tmp/busybox", "sleep", "1");
 endif;
 ##################################################
 #RESIZE
@@ -54,23 +57,30 @@ run_program("/tmp/busybox", "mount", "-t", "auto", "/product");
 ##################################################
 #DEVICE
 ##################################################
+package_extract_file("device/product", "/tmp/product.sh");
+run_program("/tmp/busybox","sh","/tmp/product.sh");
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M315" then
     ui_print("@>Detected Device: Galaxy M31");
+	package_extract_dir("device/m31/overlay", "/product/overlay");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M215" then
     ui_print("@>Detected Device: Galaxy M21");
+	package_extract_dir("device/m21/overlay", "/product/overlay");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M317" then
     ui_print("@>Detected Device: Galaxy M31s");
+	package_extract_dir("device/m31s/overlay", "/product/overlay");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A515" then
     ui_print("@>Detected Device: Galaxy A51");
+	package_extract_dir("device/a51/overlay", "/product/overlay");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A505" then
     ui_print("@>Detected Device: Galaxy A50");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "F415" then
     ui_print("@>Detected Device: Galaxy F41");
+	package_extract_dir("device/f41/overlay", "/product/overlay");
 endif;
 
 
@@ -198,10 +208,6 @@ if file_getprop("/tmp/aroma/debloat.prop", "selected") == "5" then
       package_extract_file("debloat/custom/quickshare", "/tmp/nukeengine.sh");
       run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
     endif;
-    if file_getprop("/tmp/aroma/debloat_v2.prop", "basicbloats") == "1" then
-      package_extract_file("debloat/custom/basicbloats", "/tmp/nukeengine.sh");
-      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
-    endif;
     if file_getprop("/tmp/aroma/debloat_v2.prop", "dex") == "1" then
       package_extract_file("debloat/custom/dex", "/tmp/nukeengine.sh");
       run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
@@ -228,6 +234,30 @@ if file_getprop("/tmp/aroma/debloat.prop", "selected") == "5" then
     endif;
     if file_getprop("/tmp/aroma/debloat_v2.prop", "wellbeing") == "1" then
       package_extract_file("debloat/custom/wellbeing", "/tmp/nukeengine.sh");
+      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
+    endif;
+    if file_getprop("/tmp/aroma/debloat_v2.prop", "routines") == "1" then
+      package_extract_file("debloat/custom/routines", "/tmp/nukeengine.sh");
+      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
+    endif;
+	if file_getprop("/tmp/aroma/debloat_v2.prop", "sfree") == "1" then
+      package_extract_file("debloat/custom/sfree", "/tmp/nukeengine.sh");
+      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
+    endif;
+	if file_getprop("/tmp/aroma/debloat_v2.prop", "smartview") == "1" then
+      package_extract_file("debloat/custom/smartview", "/tmp/nukeengine.sh");
+      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
+    endif;
+	if file_getprop("/tmp/aroma/debloat_v2.prop", "linktowindows") == "1" then
+      package_extract_file("debloat/custom/", "/tmp/nukeengine.sh");
+      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
+    endif;
+	if file_getprop("/tmp/aroma/debloat_v2.prop", "quickboard") == "1" then
+      package_extract_file("debloat/custom/", "/tmp/nukeengine.sh");
+      run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
+    endif;
+	if file_getprop("/tmp/aroma/debloat_v2.prop", "magnifier") == "1" then
+      package_extract_file("debloat/custom/", "/tmp/nukeengine.sh");
       run_program("/tmp/busybox","sh","/tmp/nukeengine.sh");
     endif;
 endif;

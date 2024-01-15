@@ -1,0 +1,12 @@
+menubox(
+    "Nuke Engine",
+    "Select your Preferred Debloat",
+    "@nuke",
+    "debloat.prop",
+
+    "Light Debloat",     "Removes Share, Bixby, Magnifier, Media control",   "@none",
+    "Lain's Debloat",    "Removes AR Bixby Share Mcf GOS",                "@none",
+    "Sanchet's Debloat", "Removes Above and dual messenger",                                     "@none",
+	"Heavy Debloat", "Removes Above all and Samsung account, Galaxy Store, Smart Suggestions, Routine, Smart View", "@none",
+    "Tuki's debloat",    "Same as heavy debloat, but added some more things",               "@none"
+);
