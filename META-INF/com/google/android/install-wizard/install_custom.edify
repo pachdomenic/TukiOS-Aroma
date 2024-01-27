@@ -1,4 +1,4 @@
-﻿###############################################
+﻿ ###############################################
 #CUSTOM INSTALLATION TYPE
 ###############################################
 
@@ -15,15 +15,9 @@ form(
       "1",     "Mono",                "Stock sound config, only main speaker",         "select",
       "2",     "Stereo",              "Use earpiece as secondary speaker.",            "select",
       
-    "throttle",     "Throttling",        "",                                           "group",
-      "1",     "Little to 1352",      "Less heat similar performance",                 "select",
-      "2",     "Remove throttle",     "Revert ^option above^",                         "select",
-	  "3",     "Set Stock value",     "Stock setting better stability",                "select",
-      
     "lmk",     "LMK - LowMemoryKiller",        "",                                     "group",
       "1",     "Light LMK",           "Allow heavy multi-tasking",                     "select",
       "2",     "Standard LMk",        "Allow UI more responsive",                      "select",
-	  "3",     "Set Stock value",     "Stock setting better stability",                "select",
       
     "blur",     "UserInterface",        "",                                            "group",
       "1",     "Enable Live Blur UI",       "Flagship blurs that's realistic and looks good",                      "select",
@@ -31,7 +25,7 @@ form(
       
     "group6",     "Miscellaneous",        "",                                           "group",
       "brightness",     "Remove extended brightness",       "The display will have lower Brightness than normally",  "check",
-      "dex",     "Dex on Device",       "The Dex mode will open on the device itself",  "check",
+      "dex",     "Dex on Device",       "The Dex mode will open on the device itself (BROKEN) ",  "check",
       "bootani",  "AOSP Bootanimation",  "Enables support for AOSP bootanimation zip",    "check"
 );
 
@@ -43,14 +37,15 @@ menubox(
     "Select your Preferred Debloat",
     "@nuke",
     "debloat.prop",
-
+	
+	"No Debloat",   "Recommended for normal user",                  "@none",
 	"Premade Debloat",   "Premade debloat configs",                  "@none",
     "Custom Debloat",    "Customise your own debloat",               "@none"
 );
-if prop("debloat.prop","selected") == "5" then
+if prop("debloat.prop","selected") == "2" then
   include("prebuilddebloat.edify");
 endif;
-if prop("debloat.prop","selected") == "2" then
+if prop("debloat.prop","selected") == "3" then
   include("debloater.edify");
 endif;
 

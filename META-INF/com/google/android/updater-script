@@ -3,7 +3,7 @@ ui_print("===================================");
 ui_print("  ROM    : TukiOS                  ");
 ui_print("  OS     : OneUI 6.0 | Android 14  ");
 ui_print("  Based From : Galaxy S21 FE       ");
-ui_print("  Version : V2.0 Beta              ");
+ui_print("  Version : V2.0 Beta 3             ");
 ui_print("  Security: November 2023          ");
 ui_print("  With love by @Pachadomenic        ");
 ui_print("===================================");
@@ -52,29 +52,39 @@ endif;
 ##################################################
 set_progress(0.80);
 run_program("/tmp/busybox", "sh", "/tmp/system-resize.sh");
+ui_print("@>Mounting partitions...");
 run_program("/tmp/busybox", "mount", "-t", "auto", "/system_root");
 run_program("/tmp/busybox", "mount", "-t", "auto", "/vendor");
 run_program("/tmp/busybox", "mount", "-t", "auto", "/product");
+run_program("/tmp/busybox", "mount", "-o", "rw,remount", "/system_root");
+run_program("/tmp/busybox", "mount", "-o", "rw,remount", "/vendor");
+run_program("/tmp/busybox", "mount", "-o", "rw,remount", "/product");
 ##################################################
 #DEVICE
 ##################################################
-package_extract_file("device/product", "/tmp/product.sh");
-run_program("/tmp/busybox","sh","/tmp/product.sh");
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M315" then
     ui_print("@>Detected Device: Galaxy M31");
 	package_extract_dir("device/m31/overlay", "/product/overlay");
+	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	package_extract_dir("device/m31/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M215" then
     ui_print("@>Detected Device: Galaxy M21");
 	package_extract_dir("device/m21/overlay", "/product/overlay");
+	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	package_extract_dir("device/m21/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M317" then
     ui_print("@>Detected Device: Galaxy M31s");
 	package_extract_dir("device/m31s/overlay", "/product/overlay");
+	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	package_extract_dir("device/m31s/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A515" then
     ui_print("@>Detected Device: Galaxy A51");
 	package_extract_dir("device/a51/overlay", "/product/overlay");
+	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	package_extract_dir("device/a51/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A505" then
     ui_print("@>Detected Device: Galaxy A50");
@@ -82,39 +92,11 @@ endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "F415" then
     ui_print("@>Detected Device: Galaxy F41");
 	package_extract_dir("device/f41/overlay", "/product/overlay");
+	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	package_extract_dir("device/f41/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 
 
-##################################################
-#CSC
-##################################################
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "1" then
-    ui_print("@>Installing CSC OLE...");
-    package_extract_dir("csc/ole/prism/etc", "/prism/etc");
-endif;
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "2" then
-    ui_print("@>Installing CSC ODM...");
-    package_extract_dir("csc/odm/prism/etc", "/prism/etc");
-endif;
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "3" then
-    ui_print("@>Installing CSC OLM...");
-    package_extract_dir("csc/olm/prism/etc", "/prism/etc");
-endif;
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "4" then
-    ui_print("@>Installing CSC OWO...");
-    package_extract_dir("csc/owo/prism/etc", "/prism/etc");
-endif;
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "5" then
-    ui_print("@>Installing CSC OJM...");
-    package_extract_dir("csc/ojm/prism/etc", "/prism/etc");
-endif;
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "6" then
-    ui_print("@>Installing CSC OXM...");
-    package_extract_dir("csc/oxm/prism/etc", "/prism/etc");
-endif;
-if file_getprop("/tmp/aroma/csc.prop", "selected") == "7" then
-    ui_print(" Skipping CSC ...");
-endif;
 ##################################################
 #MODS
 ##################################################
@@ -163,10 +145,6 @@ endif;
 if file_getprop("/tmp/aroma/mods.prop","blur") == "2" then
   ui_print("@>Static blur effect enabling...");
   run_program("/tmp/busybox", "sed", "-i", "s/FLAG>TRUE/FLAG>FALSE/g", "/system_root/system/etc/floating_feature.xml");
-  package_extract_file("mods/liteanim/bin/surfaceflinger", "/system_root/system/bin/surfaceflinger");
-  package_extract_file("mods/liteanim/lib/libgui.so", "/system_root/system/lib/libgui.so");
-  package_extract_file("mods/liteanim/lib64/libgui.so", "/system_root/system/lib64/libgui.so");
-  set_metadata("/system_root/system/bin/surfaceflinger", "uid", 0, "gid", 2000, "fmode", 0755, "selabel", "u:object_r:surfaceflinger_exec:s0");
 endif;
 
 # Dex
@@ -282,15 +260,15 @@ ifelse(is_mounted("/product"), unmount("/product"));
 ##################################################
 if file_getprop("/tmp/aroma/kernel.prop","selected") == "1" then
   ui_print("@>Installing GrassKSU ...");
-  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/boot.img", "/dev/block/by-name/boot");
+  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootksu.img", "/dev/block/by-name/boot");
 endif;
 if file_getprop("/tmp/aroma/kernel.prop","selected") == "2" then
   ui_print("@>Installing Vanilla Grass Kernel...");
-  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/boot.img", "/dev/block/by-name/boot");
+  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootvan.img", "/dev/block/by-name/boot");
 endif;
 if file_getprop("/tmp/aroma/kernel.prop","selected") == "3" then
-  ui_print("@>Installing Grass Kernel...");
-  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/boot.img", "/dev/block/by-name/boot");
+  ui_print("@>Installing Grass With Magisk...");
+  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootvan.img", "/dev/block/by-name/boot");
   package_extract_file("mods/magisk.zip", "/tmp/aroma/magisk.zip");
   run_program("/tmp/busybox", "unzip", "/tmp/aroma/magisk.zip", "META-INF/com/google/android/*", "-d", "/tmp/aroma/");
   run_program("/tmp/busybox", "sh", "/tmp/aroma/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/aroma/magisk.zip");
@@ -302,5 +280,6 @@ endif;
 ##################################################
 ui_print(" ");
 ui_print("SUCCESSFULLY COMPLETED!");
+ui_print("THANK YOU FOR INSTALLING!");
 ui_print(" ");
 set_progress(1.00);

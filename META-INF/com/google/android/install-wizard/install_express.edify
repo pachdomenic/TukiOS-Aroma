@@ -3,6 +3,10 @@
 ###############################################
 
 writetmpfile(
+  "mods.prop",
+  "selected.0=0\n"
+);
+writetmpfile(
   "debloat.prop",
   "selected.0=0\n"
 );

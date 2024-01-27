@@ -1,8 +1,24 @@
 TukiOS V2.0
 
--- Rom changelog
-- Update to ONEUI6
-- Added AROMA
-- added Samsung flagship features
-- Removed secsettings mods
 
+
+-- Beta 3
+- Fixed Static and Life blur options
+- Fixed Custom debloater
+- Imported repartitioner
+- Fixed image clipper 
+- Flashing google apps to data (Don't erase it after install!)
+
+-- Beta 2
+- Fixed vendor flashing on A51
+- Removed csc option
+- Attempt to fix SElinux
+- Added NO debloat option on debloater options
+- Fixed some mods
+- Fixed Samsung camera on some devices
+
+
+
+
+-- Beta 1
+- Initial beta
