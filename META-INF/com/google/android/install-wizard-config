@@ -26,11 +26,10 @@ viewbox(
     "<@center>Tap <b>'next'</b> to continue.</@>",
     "@tukilogo"
 );
-
 ###############################################
 #COMPATIBILITY CHECK
 ###############################################
-pleasewait("Checking Compatibility...");
+pleasewait("Checking Device...");
 restotmp("tools/busybox", "busybox");
 
 setvar(

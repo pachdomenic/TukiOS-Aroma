@@ -1,12 +1,17 @@
 TukiOS V2.0
 
 
+-- Beta 3.1
+- Fixed mounting
 
 -- Beta 3
 - Fixed Static and Life blur options
 - Fixed Custom debloater
 - Imported repartitioner
 - Fixed image clipper 
+- Fixed Magisk booting
+- Fixed M31s camera (UNTESTED)
+- Fixed mods
 - Flashing google apps to data (Don't erase it after install!)
 
 -- Beta 2

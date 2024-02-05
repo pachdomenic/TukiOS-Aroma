@@ -3,7 +3,7 @@ ui_print("===================================");
 ui_print("  ROM    : TukiOS                  ");
 ui_print("  OS     : OneUI 6.0 | Android 14  ");
 ui_print("  Based From : Galaxy S21 FE       ");
-ui_print("  Version : V2.0 Beta 3             ");
+ui_print("  Version : V2.0 Beta 3            ");
 ui_print("  Security: November 2023          ");
 ui_print("  With love by @Pachadomenic        ");
 ui_print("===================================");
@@ -24,6 +24,13 @@ if file_getprop("/tmp/aroma/configs.prop", "selected") == "3" then
 else
     ui_print(" Installing ROM ...");
     set_progress(0.25);
+	ui_print("@>Repatitioning...");
+	assert(update_dynamic_partitions(package_extract_file("rom/dynamic_partitions_op_list")));
+	map_partition("vendor");
+	map_partition("product");
+	map_partition("system");
+	map_partition("odm");
+	run_program("/tmp/busybox", "sleep", "1");
     ui_print("@>Extracting System...");
     block_image_update("/dev/block/mapper/system", package_extract_file("rom/system.transfer.list"), "rom/system.new.dat.br", "rom/system.patch.dat") || abort(" Failed to update system image!");
     run_program("/tmp/busybox", "sleep", "1");
@@ -41,27 +48,26 @@ else
 		block_image_update("/dev/block/mapper/vendor", package_extract_file("rom/device/m21/vendor.transfer.list"), "rom/device/m21/vendor.new.dat.br", "rom/device/m21/vendor.patch.dat") || abort(" Failed to update Vendor image!")
 	endif;
     ui_print("@>Extracting Product...");
+	set_progress(0.74);
     block_image_update("/dev/block/mapper/product", package_extract_file("rom/product.transfer.list"), "rom/product.new.dat.br", "rom/product.patch.dat") || abort(" Failed to update product image!");
     run_program("/tmp/busybox", "sleep", "1");
 	ui_print("@>Extracting odm...");
+	set_progress(0.82);
     block_image_update("/dev/block/mapper/odm", package_extract_file("rom/odm.transfer.list"), "rom/odm.new.dat.br", "rom/odm.patch.dat") || abort(" Failed to update odm image!");
     run_program("/tmp/busybox", "sleep", "1");
 endif;
 ##################################################
 #RESIZE
 ##################################################
-set_progress(0.80);
-run_program("/tmp/busybox", "sh", "/tmp/system-resize.sh");
+set_progress(0.85);
 ui_print("@>Mounting partitions...");
-run_program("/tmp/busybox", "mount", "-t", "auto", "/system_root");
-run_program("/tmp/busybox", "mount", "-t", "auto", "/vendor");
-run_program("/tmp/busybox", "mount", "-t", "auto", "/product");
-run_program("/tmp/busybox", "mount", "-o", "rw,remount", "/system_root");
-run_program("/tmp/busybox", "mount", "-o", "rw,remount", "/vendor");
-run_program("/tmp/busybox", "mount", "-o", "rw,remount", "/product");
+run_program("/tmp/busybox", "mount", "/dev/block/mapper/system", "/system_root");
+run_program("/tmp/busybox", "mount", "/dev/block/mapper/vendor", "/vendor");
+run_program("/tmp/busybox", "mount", "/dev/block/mapper/product", "/product");
 ##################################################
 #DEVICE
 ##################################################
+delete_recursive("/product/overlay");
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M315" then
     ui_print("@>Detected Device: Galaxy M31");
 	package_extract_dir("device/m31/overlay", "/product/overlay");
@@ -79,6 +85,12 @@ if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M317" then
 	package_extract_dir("device/m31s/overlay", "/product/overlay");
 	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 	package_extract_dir("device/m31s/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	delete_recursive("/vendor/firmware");
+	package_extract_dir("device/m31s/vendor", "/vendor");
+	set_metadata("/vendor/lib/hw/camera.exynos9611.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib/libexynoscamera3.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib64/hw/camera.exynos9611.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata_recursive("/vendor/firmware", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A515" then
     ui_print("@>Detected Device: Galaxy A51");
@@ -269,7 +281,7 @@ endif;
 if file_getprop("/tmp/aroma/kernel.prop","selected") == "3" then
   ui_print("@>Installing Grass With Magisk...");
   package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootvan.img", "/dev/block/by-name/boot");
-  package_extract_file("mods/magisk.zip", "/tmp/aroma/magisk.zip");
+  package_extract_file("mods/magisk/m24.zip", "/tmp/aroma/magisk.zip");
   run_program("/tmp/busybox", "unzip", "/tmp/aroma/magisk.zip", "META-INF/com/google/android/*", "-d", "/tmp/aroma/");
   run_program("/tmp/busybox", "sh", "/tmp/aroma/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/aroma/magisk.zip");
   delete_recursive("/tmp/magisk.zip");

@@ -63,3 +63,6 @@ menubox(
     "Grass Magisk",	                "Install Grass with Magisk",                                                    "@magisk",
     "Skip Kernel",  "Skip Changing Kernel at all. Use existing Kernel",            "@skip"
 );
+if prop("kernel.prop","selected") == "3" then
+  include("magisk.edify");
+endif;

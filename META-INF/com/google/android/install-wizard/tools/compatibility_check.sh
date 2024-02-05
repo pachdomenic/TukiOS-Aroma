@@ -26,65 +26,6 @@ touch $configfile
 
 bootloader=$(getprop ro.boot.bootloader)
 
-# Space Checks
-system_size=$(blockdev --getsize64 /dev/block/mapper/system)
-vendor_size=$(blockdev --getsize64 /dev/block/mapper/vendor)
-product_size=$(blockdev --getsize64 /dev/block/mapper/product)
-product_size=$(blockdev --getsize64 /dev/block/mapper/odm)
-
-system_size_mb=$(echo $system_size | cut -c1-7)
-system_size_mb=$(($system_size_mb / 1024))
-vendor_size_mb=$(($vendor_size / 1024 / 1024))
-product_size_mb=$(($product_size / 1024 / 1024))
-product_size_mb=$(($odm_size / 1024 / 1024))
-
-append_to_file "system_size=$system_size"
-append_to_file "vendor_size=$vendor_size"
-append_to_file "product_size=$product_size"
-append_to_file "odm_size=$odm_size"
-
-echo "<b>COMPUTING SPACE REQUIREMENTS :-</b>"
-echo "    -> System : $system_size_mb MB"
-echo "    -> Vendor : $vendor_size_mb MB"
-echo "    -> Product : $product_size_mb MB"
-echo "    -> Odm : $odm_size_mb MB"
-
-if [ "$vendor_size" -ge 650000000 ]; then
-    append_to_file "vendor_compatible=1"
-else
-    append_to_file "vendor_compatible=0"
-    echo "    -> <#ff0000>Vendor is Insufficient</#>"
-    exit 55
-fi
-if [ "$product_size" -ge 577589248 ]; then
-    append_to_file "product_compatible=1"
-else
-    append_to_file "product_compatible=0"
-    echo "    -> <#ff0000>Product is Insufficient</#>"
-    exit 55
-fi
-
-if [ "$system_size" -ge 5040029696 ]; then
-    append_to_file "auxy_to_system=1"
-    echo "    -> <#00ff00>System is 4.5GB+</#>"
-else
-    append_to_file "auxy_to_system=0"
-fi
-if [ "odm_size" -ge 4349952 ]; then
-    append_to_file "product_compatible=0"
-else
-    append_to_file "odm_compatible=0"
-    echo "    -> <#ff0000>Odm is Insufficient</#>"
-    exit 55
-fi
-# 400mb size 419430400
-if [ "$product_size" -ge 1024000000 ]; then
-    append_to_file "auxy_to_product=1"
-    echo "    -> <#00ff00>Product is 1GB+</#>"
-else
-    append_to_file "auxy_to_product=0"
-fi
-
 echo " "
 echo "<b>DETECTING DEVICE :-</b>"
 # Device Checks

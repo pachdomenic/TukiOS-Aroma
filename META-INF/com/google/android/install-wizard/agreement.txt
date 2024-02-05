@@ -14,7 +14,7 @@
 @Roynatech for Kernel
 @amarullz for Aroma Installer
 @MrWaehere for CRB Kitchen
-@RiskyEagle for Aroma Base 
+@Bobert_A30 for Aroma Base 
 @ricci206 for Secure Folder patch
 @3arthur6 For Bluetooth lib patcher
 @FlylarbTheBMO for helping and vendor for m31
