@@ -1,0 +1,11 @@
+menubox(
+    "Magisk Selection",
+    "Select your Preferred Magisk option",
+    "@magisk",
+    "magisk.prop",
+
+    "Magisk 24",     "Most stable, Best option",   "@none",
+    "Magisk 27",    "Newest magisk, Untested",                "@none",
+    "Magisk 26", 	"Stable, not old",                                     "@none",
+	"Magisk Delta", "Have MagiskHide, monet UI", "@none"
+);
