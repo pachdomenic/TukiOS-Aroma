@@ -3,9 +3,9 @@ ui_print("===================================");
 ui_print("  ROM    : TukiOS                  ");
 ui_print("  OS     : OneUI 6.0 | Android 14  ");
 ui_print("  Based From : Galaxy S21 FE       ");
-ui_print("  Version : V2.0 Beta 3            ");
+ui_print("  Version : V1		             ");
 ui_print("  Security: November 2023          ");
-ui_print("  With love by @Pachadomenic        ");
+ui_print("  With love by @Pachadomenic       ");
 ui_print("===================================");
 set_progress(0.10);
 ##################################################
@@ -18,6 +18,7 @@ ui_print("@>Unmounting partitions...");
 ifelse(is_mounted("/system_root"), unmount("/system_root"));
 ifelse(is_mounted("/vendor"), unmount("/vendor"));
 ifelse(is_mounted("/product"), unmount("/product"));
+ifelse(is_mounted("/odm"), unmount("/odm"));
 ##################################################
 if file_getprop("/tmp/aroma/configs.prop", "selected") == "3" then
     ui_print(" Skipping ROM ...");
@@ -52,9 +53,20 @@ else
     block_image_update("/dev/block/mapper/product", package_extract_file("rom/product.transfer.list"), "rom/product.new.dat.br", "rom/product.patch.dat") || abort(" Failed to update product image!");
     run_program("/tmp/busybox", "sleep", "1");
 	ui_print("@>Extracting odm...");
-	set_progress(0.82);
+	set_progress(0.78);
     block_image_update("/dev/block/mapper/odm", package_extract_file("rom/odm.transfer.list"), "rom/odm.new.dat.br", "rom/odm.patch.dat") || abort(" Failed to update odm image!");
     run_program("/tmp/busybox", "sleep", "1");
+	    ui_print("@>Extracting optics...");
+	set_progress(0.80);
+    block_image_update("/dev/block/by-name/optics", package_extract_file("rom/optics.transfer.list"), "rom/optics.new.dat.br", "rom/optics.patch.dat") || abort(" Failed to update product image!");
+    run_program("/tmp/busybox", "sleep", "1");
+	    ui_print("@>Extracting Prism...");
+	set_progress(0.82);
+    block_image_update("/dev/block/by-name/prism", package_extract_file("rom/prism.transfer.list"), "rom/prism.new.dat.br", "rom/product.patch.dat") || abort(" Failed to update product image!");
+    run_program("/tmp/busybox", "sleep", "1");
+	set_progress(0.84);
+	package_extract_file("rom/tukiparam.bin", "/up_param");
+	run_program("/tmp/busybox", "sleep", "5");
 endif;
 ##################################################
 #RESIZE
@@ -67,24 +79,27 @@ run_program("/tmp/busybox", "mount", "/dev/block/mapper/product", "/product");
 ##################################################
 #DEVICE
 ##################################################
-delete_recursive("/product/overlay");
+package_extract_dir("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/overlay", "/product/overlay");
+set_metadata_recursive("/product/overlay", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:system_file:s0");
+
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M315" then
     ui_print("@>Detected Device: Galaxy M31");
-	package_extract_dir("device/m31/overlay", "/product/overlay");
-	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
-	package_extract_dir("device/m31/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M215" then
     ui_print("@>Detected Device: Galaxy M21");
-	package_extract_dir("device/m21/overlay", "/product/overlay");
-	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
-	package_extract_dir("device/m21/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
+	package_extract_dir("device/m21/vendor", "/vendor");
+	set_metadata("/vendor/lib/hw/camera.exynos9611.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib/libexynoscamera3.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib64/hw/camera.exynos9611.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib64/libHprFace_GAE_api.camera.samsung.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib64/libHpr_RecGAE_cvFeature_v1.0.camera.samsung.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib/libhwjpeg.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata("/vendor/lib64/libhwjpeg.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata_recursive("/vendor/firmware", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
+	set_metadata_recursive("/vendor/saiv", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0")
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M317" then
     ui_print("@>Detected Device: Galaxy M31s");
-	package_extract_dir("device/m31s/overlay", "/product/overlay");
-	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
-	package_extract_dir("device/m31s/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 	delete_recursive("/vendor/firmware");
 	package_extract_dir("device/m31s/vendor", "/vendor");
 	set_metadata("/vendor/lib/hw/camera.exynos9611.so", "uid", 0, "gid", 0, "fmode", 0644, "selabel", "u:object_r:vendor_fw_file:s0");
@@ -94,20 +109,13 @@ if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "M317" then
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A515" then
     ui_print("@>Detected Device: Galaxy A51");
-	package_extract_dir("device/a51/overlay", "/product/overlay");
-	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
-	package_extract_dir("device/a51/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "A505" then
     ui_print("@>Detected Device: Galaxy A50");
 endif;
 if file_getprop("/tmp/aroma/compatible.prop", "device_id") == "F415" then
     ui_print("@>Detected Device: Galaxy F41");
-	package_extract_dir("device/f41/overlay", "/product/overlay");
-	delete_recursive("/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
-	package_extract_dir("device/f41/TukiOSUpdater.apk", "/system_root/system/priv-app/TukiOSUpdater/TukiOSUpdater.apk");
 endif;
-
 
 ##################################################
 #MODS
@@ -271,14 +279,10 @@ ifelse(is_mounted("/product"), unmount("/product"));
 #Kernel
 ##################################################
 if file_getprop("/tmp/aroma/kernel.prop","selected") == "1" then
-  ui_print("@>Installing GrassKSU ...");
-  package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootksu.img", "/dev/block/by-name/boot");
-endif;
-if file_getprop("/tmp/aroma/kernel.prop","selected") == "2" then
   ui_print("@>Installing Vanilla Grass Kernel...");
   package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootvan.img", "/dev/block/by-name/boot");
 endif;
-if file_getprop("/tmp/aroma/kernel.prop","selected") == "3" then
+if file_getprop("/tmp/aroma/kernel.prop","selected") == "2" then
   ui_print("@>Installing Grass With Magisk...");
   package_extract_file("device/"+file_getprop("/tmp/aroma/compatible.prop", "device_id_alt")+"/bootvan.img", "/dev/block/by-name/boot");
   package_extract_file("mods/magisk/m24.zip", "/tmp/aroma/magisk.zip");
@@ -286,7 +290,7 @@ if file_getprop("/tmp/aroma/kernel.prop","selected") == "3" then
   run_program("/tmp/busybox", "sh", "/tmp/aroma/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/aroma/magisk.zip");
   delete_recursive("/tmp/magisk.zip");
 endif;
-if file_getprop("/tmp/aroma/kernel.prop","selected") == "4" then
+if file_getprop("/tmp/aroma/kernel.prop","selected") == "3" then
   ui_print("@>Skipping Kernel...");
 endif;
 ##################################################

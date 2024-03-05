@@ -53,7 +53,7 @@ if is_substring "$device" "$bootloader"; then
     echo "    -> <#00ff00>Detected as : Galaxy $device </#>"
     append_to_file "device_id=$device"
     append_to_file "device_id_alt=$device_alt"
-	append_to_file "m21vendor=1"
+	append_to_file "m31vendor=1"
     device_supported="1"
     exit 1
 fi

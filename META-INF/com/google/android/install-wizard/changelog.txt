@@ -1,6 +1,16 @@
 TukiOS V2.0
 
 
+-- Beta 4
+- Fixed some KNOX apps
+- Added AOD animation
+- Added some patches
+- Fixed many bugs
+- Attempt to fix product bugging in some devices
+
+-- Beta 3.2
+- Fixed overlay flashing
+
 -- Beta 3.1
 - Fixed mounting
 
@@ -23,7 +33,5 @@ TukiOS V2.0
 - Fixed Samsung camera on some devices
 
 
-
-
 -- Beta 1
-- Initial beta
+- Rebased to S21 FE
